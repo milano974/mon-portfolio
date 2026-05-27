@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Milàn LIBELLE — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0b0e14;
+    --surface: #13171f;
+    --surface2: #1a1f2b;
+    --border: rgba(255,255,255,0.07);
+    --accent: #3affb8;
+    --accent2: #38aaff;
+    --text: #e8eaf0;
+    --muted: #7a8099;
+    --card-radius: 16px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Grid background */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(58,255,184,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(58,255,184,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* Glow blob */
+  body::after {
+    content: '';
+    position: fixed;
+    width: 700px;
+    height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(58,255,184,0.06) 0%, transparent 70%);
+    top: -200px;
+    right: -200px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    padding: 28px 0 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 80px;
+  }
+
+  .nav-logo {
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    letter-spacing: 0.05em;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ─── HERO ─── */
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 48px;
+    align-items: start;
+    margin-bottom: 100px;
+  }
+
+  .hero-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+
+  .hero-tag::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--accent);
+  }
+
+  h1 {
+    font-size: clamp(42px, 7vw, 72px);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+  }
+
+  h1 .accent { color: var(--accent); }
+
+  .hero-desc {
+    font-size: 17px;
+    color: var(--muted);
+    line-height: 1.7;
+    max-width: 520px;
+    margin-bottom: 36px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 36px;
+  }
+
+  .badge {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    transition: all 0.2s;
+  }
+
+  .badge:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .badge.highlight {
+    border-color: rgba(58,255,184,0.4);
+    color: var(--accent);
+    background: rgba(58,255,184,0.06);
+  }
+
+  .hero-cta {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: #0b0e14;
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 12px 24px;
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-primary:hover {
+    background: #5fffca;
+    transform: translateY(-1px);
+  }
+
+  .btn-secondary {
+    font-size: 13px;
+    color: var(--muted);
+    text-decoration: none;
+    font-family: 'Space Mono', monospace;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--muted);
+    padding-bottom: 2px;
+    transition: color 0.2s;
+  }
+
+  .btn-secondary:hover { color: var(--text); }
+
+  /* Status indicator */
+  .status-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    padding: 28px;
+    width: 240px;
+    flex-shrink: 0;
+  }
+
+  .status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+    margin-right: 8px;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  .status-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+
+  .status-text {
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 600;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  .status-sub {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 16px 0;
+  }
+
+  .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+    margin-bottom: 8px;
+  }
+
+  .contact-row:hover { color: var(--accent); }
+
+  .contact-icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0.5;
+  }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 40px;
+  }
+
+  .section-num {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+  }
+
+  .section-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── GENERAL SECTIONS ─── */
+  section {
+    margin-bottom: 100px;
+  }
+
+  /* ─── FORMATION ─── */
+  .formation-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    padding: 32px;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: 24px;
+    align-items: center;
+    transition: border-color 0.3s;
+  }
+
+  .formation-card:hover {
+    border-color: rgba(58,255,184,0.2);
+  }
+
+  .logo-ecole {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+    background: rgba(255,255,255,0.03);
+    border-radius: 12px;
+    padding: 6px;
+    border: 1px solid var(--border);
+  }
+
+  .formation-school {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  .formation-degree {
+    font-size: 19px;
+    font-weight: 800;
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .formation-desc {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  .formation-year {
+    font-family: 'Space Mono', monospace;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--border);
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+    text-align: right;
+  }
+
+  /* ─── SKILLS GRID ─── */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .skill-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    padding: 28px;
+    transition: border-color 0.3s;
+  }
+
+  .skill-card:hover {
+    border-color: rgba(56,170,255,0.3);
+  }
+
+  .skill-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: rgba(56,170,255,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    font-size: 20px;
+  }
+
+  .skill-name {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .skill-desc {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.65;
+  }
+
+  .skill-list {
+    margin-top: 14px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .skill-list span {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    padding: 3px 10px;
+    border-radius: 4px;
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* ─── PROJECT CARD ─── */
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--card-radius);
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+
+  .project-card:hover {
+    border-color: rgba(58,255,184,0.25);
+  } project-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+  }
+
+  .project-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .project-type {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .project-date {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+  }
+
+  .project-title {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+    margin-bottom: 8px;
+    line-height: 1.2;
+  }
+
+  .project-subtitle {
+    font-size: 14px;
+    color: var(--accent2);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  .project-desc {
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+
+  .project-highlights {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+
+  .highlight-item {
+    background: var(--surface2);
+    border-radius: 12px;
+    padding: 16px 20px;
+    border: 1px solid var(--border);
+  }
+
+  .highlight-label {
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .highlight-value {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.4;
+  }
+
+  .tech-stack {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .tech-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 6px;
+    background: var(--surface2);
+    color: var(--muted);
+    border: 1px solid var(--border);
+  }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .footer-left {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .footer-right {
+    display: flex;
+    gap: 24px;
+  }
+
+  .footer-link {
+    font-family: 'Space Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .footer-link:hover { color: var(--accent); }
+
+  /* Responsive */
+  @media (max-width: 680px) {
+    .hero { grid-template-columns: 1fr; }
+    .status-card { width: 100%; }
+    nav { flex-direction: column; gap: 16px; }
+    .formation-card { grid-template-columns: 1fr; text-align: center; justify-items: center; }
+    .formation-year { text-align: center; font-size: 20px; color: var(--muted); }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <nav>
+    <span class="nav-logo">ML.portfolio</span>
+    <ul class="nav-links">
+      <li><a href="#formation">Formation</a></li>
+      <li><a href="#competences">Compétences</a></li>
+      <li><a href="#projets">Projets</a></li>
+      <li><a href="mailto:libelle.milan@gmail.com">Contact</a></li>
+    </ul>
+  </nav>
+
+  <div class="hero">
+    <div>
+      <div class="hero-tag">Apprenti Ingénieur · Open to work</div>
+      <h1>Milàn<br><span class="accent">LIBELLE</span></h1>
+      <p class="hero-desc">
+        Passionné d'électronique embarquée et d'informatique, je conçois des systèmes à l'intersection du matériel et du logiciel. Actuellement en recherche d'un contrat d'apprentissage de 3 ans pour intégrer Polytech Sorbonne.
+      </p>
+      <div class="hero-badges">
+        <span class="badge highlight">Polytech Sorbonne</span>
+        <span class="badge">Électronique embarquée</span>
+        <span class="badge">STM32 / C</span>
+        <span class="badge">KiCad / PCB</span>
+        <span class="badge">Python &amp; IA</span>
+      </div>
+      <div class="hero-cta">
+        <a href="mailto:libelle.milan@gmail.com" class="btn-primary">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          Me contacter
+        </a>
+        <a href="#projets" class="btn-secondary">Voir mes projets →</a>
+      </div>
+    </div>
+
+    <div class="status-card">
+      <div class="status-label">
+        <span class="status-dot"></span>Disponible
+      </div>
+      <div class="status-text">Recherche contrat d'apprentissage 3 ans</div>
+      <div class="status-sub">Intégration du cycle ingénieur à Polytech Sorbonne</div>
+      <div class="divider"></div>
+      <a href="mailto:libelle.milan@gmail.com" class="contact-row">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        libelle.milan@gmail.com
+      </a>
+      <div class="contact-row" style="cursor:default;">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 2a8 8 0 0 0-8 8c0 5.4 8 14 8 14s8-8.6 8-14a8 8 0 0 0-8-8z"/></svg>
+        Paris, France
+      </div>
+      <div class="contact-row" style="cursor:default;">
+        <svg class="contact-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        20 ans
+      </div>
+    </div>
+  </div>
+
+  <section id="formation">
+    <div class="section-header">
+      <span class="section-num">01 /</span>
+      <h2 class="section-title">Formation</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 20px;">
+      <div class="formation-card">
+        <img class="logo-ecole" src="assets/téléchargement.png" alt="Logo Polytech Sorbonne">
+        <div>
+          <div class="formation-school">Polytech Sorbonne · Paris</div>
+          <div class="formation-degree">Diplôme d'ingénieur — Électronique &amp; Informatique</div>
+          <div class="formation-desc">Admis au cycle ingénieur de 3 ans. Recherche active d'un contrat d'apprentissage (rythme d'alternance idéal : 1 semaine entreprise / 1 semaine école).</div>
+        </div>
+        <div class="formation-year">2026–<br>2029</div>
+      </div>
+
+      <div class="formation-card">
+        <img class="logo-ecole" src="assets/logo iut de cachan.png" alt="Logo IUT de Cachan">
+        <div>
+          <div class="formation-school">IUT de Cachan · Université Paris-Saclay</div>
+          <div class="formation-degree">BUT GEII — Génie Électrique et Informatique Industrielle</div>
+          <div class="formation-desc">Parcours Électronique embarquée. Consolidation pratique via de la programmation avancée sous divers langages et de la mise en œuvre de bancs de tests.</div>
+        </div>
+        <div class="formation-year">2023–<br>2026</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="competences">
+    <div class="section-header">
+      <span class="section-num">02 /</span>
+      <h2 class="section-title">Compétences</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="skills-grid">
+      <div class="skill-card">
+        <div class="skill-icon">🔌</div>
+        <div class="skill-name">Électronique Embarquée &amp; Hardware</div>
+        <div class="skill-desc">Conception de systèmes électroniques. Expérience solide et polyvalente dans la mise en pratique de diverses transmissions de données matérielles, le traitement de signaux, et le brasage de précision.</div>
+        <div class="skill-list">
+          <span>STM32</span><span>Arduino</span><span>I²C / SPI / UART</span><span>Modulation PWM</span><span>Transmissions de données</span><span>LTspice</span><span>Quartus</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">🖥️</div>
+        <div class="skill-name">Conception &amp; Fabrication PCB</div>
+        <div class="skill-desc">Maîtrise de l'intégralité du flux de CAO électronique. Saisie de schémas, routage de pistes et fabrication physique autonome via l'utilisation de machines-outils CNC industrielles numériques.</div>
+        <div class="skill-list">
+          <span>KiCad</span><span>Technodrill 3</span><span>Galaad 3</span><span>Percival</span><span>Gravure Anglaise</span><span>Fraisage CNC</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">💻</div>
+        <div class="skill-name">Programmation multi-langages</div>
+        <div class="skill-desc">Développement applicatif et firmware via divers langages de programmation. Création de scripts d'acquisition réseau, de pilotes de registres matériels et de traitement de données d'ingénierie.</div>
+        <div class="skill-list">
+          <span>C / C++</span><span>Python</span><span>MATLAB</span><span>VHDL</span><span>FatFs (SPI)</span><span>STM32CubeIDE</span><span>PyCharm</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">🤖</div>
+        <div class="skill-name">Intelligence Artificielle &amp; Robotique</div>
+        <div class="skill-desc">Architecture de Deep Learning appliquée à l'analyse ultrasonore (TFM/FMC). Configuration logicielle de trajectoires cinématiques et d'IHM de contrôle pour bras robotiques industriels 6 axes.</div>
+        <div class="skill-list">
+          <span>PyTorch</span><span>U-Net</span><span>Diffusion (DDPM)</span><span>RobotDK</span><span>Bras Pragma</span><span>Verasonics</span><span>CUDA</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">📡</div>
+        <div class="skill-name">Réseaux &amp; Systèmes Virtuels</div>
+        <div class="skill-desc">Déploiement et configuration de topologies réseaux et de serveurs virtualisés sous Linux. Programmation d'interfaces réseaux basées sur le modèle de sockets de données en temps réel.</div>
+        <div class="skill-list">
+          <span>Linux</span><span>VirtualBox</span><span>Sockets UDP/TCP</span><span>Nmap / Netcat</span><span>SSH / PuTTY</span><span>Horloge RTC</span>
+        </div>
+      </div>
+
+      <div class="skill-card">
+        <div class="skill-icon">📐</div>
+        <div class="skill-name">Gestion &amp; CAO Mécanique</div>
+        <div class="skill-desc">Modélisation tridimensionnelle de structures et de boîtiers de protection mécanique. Planification opérationnelle des tâches clés de projet et documentation technique.</div>
+        <div class="skill-list">
+          <span>Autodesk Fusion</span><span>Impression 3D</span><span>Diagramme Gantt</span><span>Gestion en binôme</span><span>Rédaction Tech</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="projets">
+    <div class="section-header">
+      <span class="section-num">03 /</span>
+      <h2 class="section-title">Projets</h2>
+      <div class="section-line"></div>
+    </div>
+
+    <div class="project-card">
+      <div class="project-meta">
+        <span class="project-type">Stage BUT3 · Recherche scientifique</span>
+        <span class="project-date">Jan — Avr 2026</span>
+      </div>
+      <div class="project-title">Électronique embarquée pour le suivi automatisé de la biodiversité</div>
+      <div class="project-subtitle">UMR EGCE — Institut Diversité Écologie et Évolution du Vivant · Paris-Saclay</div>
+      <p class="project-desc">
+        Conception complète d'un système embarqué basse consommation pour l'étude comportementale des abeilles solitaires (<em>Osmia cornuta</em>), dans le cadre du projet international FEF Kakamega (Kenya). Objectif : passer d'un prototype Arduino encombrant à une version industrielle compacte et autonome intégrant 8 capteurs infrarouges, une horloge RTC et un stockage local sur microSD.
+      </p>
+
+      <div class="project-highlights">
+        <div class="highlight-item">
+          <div class="highlight-label">Microcontrôleur</div>
+          <div class="highlight-value">STM32F446RE (Nucleo) → PCB custom</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Capteurs</div>
+          <div class="highlight-value">8× QRE1113 infrarouge + 2× DS18B20Z température</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Fabrication</div>
+          <div class="highlight-value">PCB commandé via JLCPCB, assemblage SMT automatisé</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Données</div>
+          <div class="highlight-value">Format CSV horodaté Unix, fichier quotidien auto-généré</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px; font-size: 14px; color: var(--muted); line-height: 1.75;">
+        <strong style="color: var(--text);">Réalisations clés :</strong> gestion I²C de l'horloge RTC DS3231 avec conversion BCD→décimal, communication SPI pour la carte microSD avec bibliothèque FatFs, multiplexage analogique 8 canaux via 74HC4051, anti-rebond logiciel pour l'enregistrement des passages, et schéma électronique complet sous KiCad organisé en blocs fonctionnels.
+      </div>
+
+      <div class="tech-stack">
+        <span class="tech-tag">C / STM32CubeIDE</span>
+        <span class="tech-tag">KiCad</span>
+        <span class="tech-tag">Autodesk Fusion</span>
+        <span class="tech-tag">I²C / SPI / UART</span>
+        <span class="tech-tag">PCB Design</span>
+        <span class="tech-tag">FatFs</span>
+      </div>
+    </div>
+    
+    <div style="height: 24px;"></div>
+
+    <div class="project-card">
+      <div class="project-meta">
+        <span class="project-type">Projet S5 · Automatisation de Fabrication</span>
+        <span class="project-date">Année 2025</span>
+      </div>
+      <div class="project-title">Mise en œuvre de la fraiseuse CNC Technodrill 3 &amp; Réalisation de tutoriel</div>
+      <div class="project-subtitle">IUT de Cachan · Université Paris-Saclay</div>
+      <p class="project-desc">
+        Étude approfondie et mise en service opérationnelle d'une fraiseuse à commande numérique (CNC) industrielle pour circuits imprimés. Ce projet a abouti à la création d'une procédure méthodologique (tutoriel de référence) pour l'IUT et à la fabrication physique de cartes électroniques fonctionnelles complexes à partir de fichiers de CAO.
+      </p>
+
+      <div class="project-highlights">
+        <div class="highlight-item">
+          <div class="highlight-label">Machine CNC</div>
+          <div class="highlight-value">CIF Technodrill 3 (Usinage mécanique de précision)</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Chaîne de logiciels</div>
+          <div class="highlight-value">Percival (Import Gerber) + GALAAD 3 (Pilotage commande numérique)</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Configurations critiques</div>
+          <div class="highlight-value">Réglage de l'axe Z, prise d'origine de référence, gestion du plateau martyr</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Livrable</div>
+          <div class="highlight-value">Guide technique de référence pour les futures promotions GEII</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px; font-size: 14px; color: var(--muted); line-height: 1.75;">
+        <strong style="color: var(--text);">Points clés :</strong> Traitement et correction des fichiers d'isolation des pistes, calcul de profondeur de gravure anglaise sur cuivre (FR4), étalonnage micrométrique de la hauteur d'outil, et validation expérimentale par le fraisage complet d'un circuit imprimé réel.
+      </div>
+
+      <div class="tech-stack">
+        <span class="tech-tag">Fraisage CNC</span>
+        <span class="tech-tag">Galaad 3</span>
+        <span class="tech-tag">Percival</span>
+        <span class="tech-tag">Fichiers Gerber</span>
+        <span class="tech-tag">Génie Industriel</span>
+        <span class="tech-tag">CFAO</span>
+      </div>
+    </div>
+
+    <div style="height: 24px;"></div>
+
+    <div class="project-card">
+      <div class="project-meta">
+        <span class="project-type">Projet S4 · Matériel &amp; Logiciel</span>
+        <span class="project-date">Année 2024</span>
+      </div>
+      <div class="project-title">Motorisation et automatisation d'un tachymètre pour simulateur de vol</div>
+      <div class="project-subtitle">IUT de Cachan · Université Paris-Saclay</div>
+      <p class="project-desc">
+        Développement du système d'asservissement mécanique de l'aiguille d'un tachymètre d'hélicoptère (Cabri G2) intégré dans un cockpit virtuel. Le système utilise un traitement de signal magnétique pour le recalage automatique sécurisé (Zéro absolu) et établit une communication réseau bidirectionnelle en temps réel avec le simulateur X-Plane.
+      </p>
+
+      <div class="project-highlights">
+        <div class="highlight-item">
+          <div class="highlight-label">Hardware</div>
+          <div class="highlight-value">STM32 Nucleo-F429ZI &amp; Moteur pas à pas + Driver X113647</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Capteur</div>
+          <div class="highlight-value">Effet Hall magnétique SS49 (Acquisition ADC 12 bits via DMA)</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Réseau &amp; IHM</div>
+          <div class="highlight-value">Sockets UDP Python (PyCharm) liaison télémétrique X-Plane 11</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Diagnostic</div>
+          <div class="highlight-value">Liaison série UART affichée sur terminal PuTTY</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px; font-size: 14px; color: var(--muted); line-height: 1.75;">
+        <strong style="color: var(--text);">Points clés :</strong> Programmation de séquences logiques d'inversion des bobines pour contrôler le sens horaire/anti-horaire, création d'un filtre logiciel à seuil (2110), câblage, brasage et intégration mécanique sur le cockpit.
+      </div>
+
+      <div class="tech-stack">
+        <span class="tech-tag">C / HAL STM32</span>
+        <span class="tech-tag">Python</span>
+        <span class="tech-tag">ADC / DMA</span>
+        <span class="tech-tag">Sockets UDP</span>
+        <span class="tech-tag">PuTTY</span>
+        <span class="tech-tag">X-Plane 11</span>
+      </div>
+    </div>
+    
+    <div style="height: 24px;"></div>
+
+    <div class="project-card">
+      <div class="project-meta">
+        <span class="project-type">Projet S2 · Robotique Autonome</span>
+        <span class="project-date">Année 2024</span>
+      </div>
+      <div class="project-title">Conception d'un robot suiveur de ligne autonome — Gamel Trophy</div>
+      <div class="project-subtitle">IUT de Cachan · Université Paris-Saclay</div>
+      <p class="project-desc">
+        Conception, routage, assemblage de cartes électroniques et programmation algorithmique d'un robot mobile autonome destiné à participer à la compétition annuelle majeure de l'IUT de Cachan : le Gamel Trophy. Le système visait à optimiser la vitesse et la précision du suivi de trajectoire sur piste en respectant les contraintes strictes d'un cahier des charges.
+      </p>
+
+      <div class="project-highlights">
+        <div class="highlight-item">
+          <div class="highlight-label">Conception CAO</div>
+          <div class="highlight-value">Schéma et routage PCB intégral sur KiCad</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Asservissement</div>
+          <div class="highlight-value">Gestion de capteurs de ligne réfléchissants et PWM moteurs</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Fabrication</div>
+          <div class="highlight-value">Assemblage et soudure manuelle des composants hardware</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Méthodologie</div>
+          <div class="highlight-value">Gestion de projet découpée en 3 phases, travail d'équipe (binôme)</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 20px; font-size: 14px; color: var(--muted); line-height: 1.75;">
+        <strong style="color: var(--text);">Points clés :</strong> Élaboration de schémas d'alimentation et de traitement de signaux capteurs, écriture du programme de test des cartes, implémentation d'algorithmes de correction de trajectoire, et développement de compétences transversales cruciales en planification et écoute active.
+      </div>
+
+      <div class="tech-stack">
+        <span class="tech-tag">KiCad</span>
+        <span class="tech-tag">Robotique</span>
+        <span class="tech-tag">PWM</span>
+        <span class="tech-tag">Soudure &amp; Assemblage</span>
+        <span class="tech-tag">Algorithmique</span>
+        <span class="tech-tag">Gestion de projet</span>
+      </div>
+    </div>
+
+    <div style="height: 24px;"></div>
+
+    <div class="project-card">
+      <div class="project-meta">
+        <span class="project-type">Stage BUT2 · Recherche en IA &amp; CND</span>
+        <span class="project-date">Mai — Juil 2025</span>
+      </div>
+      <div class="project-title">Prise de décision assistée par l'IA dans les tests par ultrasons</div>
+      <div class="project-subtitle">École de Technologie Supérieure · Montréal, Québec</div>
+      <p class="project-desc">
+        Participation à deux projets de recherche en contrôle non-destructif (CND) au laboratoire PULETS de l'ÉTS. Collaboration avec les entreprises Evident, Nucleom et Eddyfi. Premier projet : développement d'une IA (architecture U-Net + diffusion guidée) pour reconstruire automatiquement des dessins techniques de corrosion à partir d'images ultrasonores FMC/TFM. Second projet : classification de défauts par orientation et taille.
+      </p>
+
+      <div class="project-highlights">
+        <div class="highlight-item">
+          <div class="highlight-label">Architecture IA</div>
+          <div class="highlight-value">U-Net + Diffusion Guidée (DDPM / Pytorch)</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Robotique &amp; Capture</div>
+          <div class="highlight-value">Programmation de trajectoires via RobotDK (bras 6 axes Pragma)</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Acquisition</div>
+          <div class="highlight-value">Verasonics FMC avec scripts d'activation sous MATLAB</div>
+        </div>
+        <div class="highlight-item">
+          <div class="highlight-label">Dataset</div>
+          <div class="highlight-value">1 700 images TFM d'entraînement · Serveurs de calcul GPU</div>
+        </div>
+      </div>
+
+      <div class="tech-stack">
+        <span class="tech-tag">Python / PyTorch</span>
+        <span class="tech-tag">U-Net</span>
+        <span class="tech-tag">Matlab</span>
+        <span class="tech-tag">RobotDK</span>
+        <span class="tech-tag">TFM / FMC</span>
+        <span class="tech-tag">Ultrasons (CND)</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-left">© 2026 Milàn LIBELLE</div>
+    <div class="footer-right">
+      <a href="mailto:libelle.milan@gmail.com" class="footer-link">libelle.milan@gmail.com</a>
+    </div>
+  </footer>
+
+</div>
+</body>
+</html>
